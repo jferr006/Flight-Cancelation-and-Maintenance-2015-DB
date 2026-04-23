@@ -179,7 +179,7 @@ SELECT
 FROM flights_sample AS F
 INNER JOIN airports AS AR ON F.ORIGIN_AIRPORT = AR.iata_code
 GROUP BY AR.airport
-HAVING COUNT(*) > 100 AND AVG(F.DEPARTURE_DELAY) > 15
+HAVING COUNT(*) > 100 
 ORDER BY Average_Delay DESC;
 
 --11) Statistics for every airports. Statistics for Miami International Airport
