@@ -194,7 +194,7 @@ BEGIN
     SELECT 
         ORIGIN_AIRPORT, 
         COUNT(*) AS Total_Departures,
-        AVG(TAXI_OUT) AS Avg_Taxi_Out_Time
+        CAST (AVG(TAXI_OUT)AS DECIMAL(10,2)) AS Avg_Taxi_Out_Time
     FROM flights_sample
     WHERE ORIGIN_AIRPORT = @AirportCode
     GROUP BY ORIGIN_AIRPORT
