@@ -53,6 +53,7 @@ Average delay was 6.7 minutes
 SELECT 
     AIRLINE, 
     FLIGHT_NUMBER, 
+    TAIL_NUMBER,
     ARRIVAL_DELAY
 FROM flights_sample
 WHERE ARRIVAL_DELAY > (SELECT AVG(ARRIVAL_DELAY) FROM flights_sample)
