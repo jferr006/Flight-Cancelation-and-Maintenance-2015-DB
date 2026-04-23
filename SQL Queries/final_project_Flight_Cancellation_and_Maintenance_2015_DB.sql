@@ -182,7 +182,7 @@ GROUP BY AR.airport
 HAVING COUNT(*) > 100 
 ORDER BY Average_Delay DESC;
 
---11) Statistics for every airports. Statistics for Miami International Airport
+--11) Statistics for every airports. Statistics for Hartsfiel-Jackson Atlanta International Airport (Busiest Airport)
 
 GO
 CREATE PROCEDURE AirportStats @AirportCode VARCHAR(10)
@@ -201,7 +201,7 @@ BEGIN
 END;
 GO
 -- 
-EXEC AirportStats @AirportCode = 'MIA'
+EXEC AirportStats @AirportCode = 'ATL'
 
 --12) Get airport traffic statistics 
 
@@ -210,18 +210,19 @@ CREATE VIEW AirportTraffic AS
 SELECT 
     AR.city,
     AR.state,
+    AR.iata_code,
     AR.airport,
     COUNT(F.FLIGHT_NUMBER) AS Total_Flights,
     COUNT(DISTINCT F.DESTINATION_AIRPORT) AS Unique_Destinations
 FROM airports AS AR
 INNER JOIN flights_sample AS F ON AR.iata_code = F.ORIGIN_AIRPORT
-GROUP BY AR.city, AR.state, AR.airport
+GROUP BY AR.city, AR.state, AR.airport, AR.iata_code
 GO
 
 SELECT TOP (10) * FROM AirportTraffic
 ORDER BY Total_Flights DESC;
 
--- 14) Number of maintenance based off year of aircraft models, Sorted by year_built
+-- 13) Number of maintenance based off year of aircraft models, Sorted by year_built
 
 SELECT ai.year_built, COUNT(*) AS Maintenance
 FROM maintenance_history mh
@@ -229,7 +230,7 @@ JOIN aircraft_info ai ON mh.tail_number = ai.tail_number
 GROUP BY ai.year_built
 ORDER BY ai.year_built ASC;
 
--- 15) Number of maintenance based off manufacturer
+-- 14) Number of maintenance based off manufacturer
 
 SELECT ai.manufacturer, COUNT(*) AS Maintenance
 FROM maintenance_history mh
@@ -237,21 +238,21 @@ JOIN aircraft_info ai ON mh.tail_number = ai.tail_number
 GROUP BY ai.manufacturer
 ORDER BY Maintenance DESC;
 
--- 16) Number of maintenance based off airline_company
+-- 15) Number of maintenance based off airline_company
 
 SELECT mh.airline_company, COUNT(*) AS Maintenance
 FROM maintenance_history mh
 GROUP BY mh.airline_company
 ORDER BY Maintenance DESC;
 
--- 17) Number of maintenance based off tail_number
+-- 16) Number of maintenance based off tail_number
 
 SELECT mh.tail_number, COUNT(*) AS Maintenance
 FROM maintenance_history mh
 GROUP BY mh.tail_number
 ORDER BY Maintenance DESC;
 
--- 18) Large assortment of all 4 catergories
+-- 17) Large assortment of all 4 catergories
 
 SELECT ai.year_built, mh.airline_company, ai.manufacturer, mh.tail_number, COUNT(*) AS Maintenance
 FROM maintenance_history mh
@@ -259,7 +260,7 @@ JOIN aircraft_info ai ON mh.tail_number = ai.tail_number
 GROUP BY ai.manufacturer, ai.year_built, mh.airline_company, mh.tail_number
 ORDER BY Maintenance DESC;
 
--- 19) Holiday flights
+-- 18) Holiday flights
 /*
 using 'flights_sample' and 'airlines' tables.
 We Filter DAY from 'flights_sample' to only include '25' = Christmas Day.
@@ -286,7 +287,7 @@ WHERE f.DAY = 31
 GROUP BY a.Airline
 ORDER BY New_Years_Flights DESC;
 
--- 20) Highest seated capacity rated
+-- 19) Highest seated capacity rated
 /*
 We pull form the aircraft_info table selecting columns seating_capacity and tail_number.
 We pull from the maintenance_history table selecting tail_number and airline_company.
@@ -299,7 +300,7 @@ FROM maintenance_history mh
 JOIN aircraft_info ai ON mh.tail_number = ai.tail_number
 ORDER BY ai.seating_capacity DESC;
 
--- 21) Most expensive maintenance cost
+-- 20) Most expensive maintenance cost
 /*
 We will be using the tables 'maintenance_history'.
 Selecting columns airline_company, tail_number, maintenance_cost.
@@ -315,7 +316,7 @@ FROM maintenance_history
 GROUP BY airline_company
 ORDER BY total_cost DESC;
 
--- 22) Airline with the most expensive maintenance cost per seating capacity
+-- 21) Airline with the most expensive maintenance cost per seating capacity
 /*
 We will be using the tables 'maintenance_history' and 'aircraft_info'.
 We will join these tables on the 'tail_number' column.
@@ -332,7 +333,7 @@ JOIN aircraft_info ai ON mh.tail_number = ai.tail_number
 GROUP BY mh.airline_company
 ORDER BY mtnc_cost_vs_seat_cap DESC;
 
--- 23) Most used aircraft model from each airline company
+-- 22) Most used aircraft model from each airline company
 /*
 We will be using the tables maintenance_history and aircraft_info.
 we will join these tables on the tail_number column.
