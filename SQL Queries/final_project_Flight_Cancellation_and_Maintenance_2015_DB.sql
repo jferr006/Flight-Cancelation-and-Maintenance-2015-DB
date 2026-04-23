@@ -47,8 +47,10 @@ INNER JOIN airlines AS AL ON AT.AIRLINE = AL.iata_code
 ORDER BY AT.Total_Flights DESC;
 
 --4) Flights with above average delay-Possible outliers
-
-SELECT TOP 5
+Average delay was 6.7 minutes
+1457 flights experienced a delay above average
+    
+SELECT 
     AIRLINE, 
     FLIGHT_NUMBER, 
     ARRIVAL_DELAY
