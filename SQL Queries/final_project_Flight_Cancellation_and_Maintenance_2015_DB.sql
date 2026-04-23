@@ -1,7 +1,7 @@
 -- Final Project Queries for Flight Cancellation and Maintenance 2015 Database
 
 --1) What's the most common cancellation reason?
-
+--Jean Charles
 SELECT 
     C.cancellation_description, 
     COUNT(F.CANCELLED) AS Total_cancellations
