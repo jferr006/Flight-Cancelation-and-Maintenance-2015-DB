@@ -252,7 +252,7 @@ FROM maintenance_history mh
 GROUP BY mh.tail_number
 ORDER BY Maintenance DESC;
 
--- 17) Large assortment of all 4 catergories
+-- 17) Number of maintenances and details of the aircraft
 
 SELECT ai.year_built, mh.airline_company, ai.manufacturer, mh.tail_number, COUNT(*) AS Maintenance
 FROM maintenance_history mh
