@@ -102,17 +102,16 @@ INNER JOIN airlines AS AL ON F.AIRLINE = AL.iata_code
 GROUP BY AL.airline
 ORDER BY Number_Of_Flights DESC
 
---7) Long-haul routes: What are the longest flights (distance)? 
+--7) Fleet size by airline
 
-SELECT DISTINCT TOP (5) 
-    (SELECT airline FROM airlines WHERE iata_code = F.AIRLINE) AS Airline_Name,
-    F.FLIGHT_NUMBER, 
-    (SELECT airport FROM airports WHERE iata_code = F.ORIGIN_AIRPORT) AS Origin_Airport,
-    (SELECT airport FROM airports WHERE iata_code = F.DESTINATION_AIRPORT) AS Destination_Airport,
-    F.DISTANCE
+SELECT 
+    AL.airline, 
+    COUNT(DISTINCT F.TAIL_NUMBER) AS Fleet
 FROM flights_sample AS F
-ORDER BY F.DISTANCE DESC;
-
+INNER JOIN airlines AS AL ON F.AIRLINE = AL.iata_code
+WHERE F.TAIL_NUMBER IS NOT NULL
+GROUP BY AL.airline
+ORDER BY Fleet DESC
 
 --8) What's the most popular day of the week to fly and what is the corresponding cancellation rate? 
 
