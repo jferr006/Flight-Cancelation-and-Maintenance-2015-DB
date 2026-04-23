@@ -21,7 +21,6 @@ SELECT
     RANK() OVER (ORDER BY COUNT(*) DESC) AS Cancellation_Rank
 FROM flights_sample AS F
 INNER JOIN airlines AS AL ON F.AIRLINE = AL.iata_code
-WHERE F.CANCELLED = 1
 GROUP BY AL.airline;
 
 --3) Cancellation percentage per airline
