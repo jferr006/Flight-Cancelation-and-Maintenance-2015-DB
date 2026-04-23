@@ -23,7 +23,7 @@ FROM flights_sample AS F
 INNER JOIN airlines AS AL ON F.AIRLINE = AL.iata_code
 GROUP BY AL.airline;
 
---3) Cancellation percentage per airline
+--3) Cancellation rate per airline
 
 WITH AirlineTotals AS (
     SELECT AIRLINE, COUNT(*) AS Total_Flights
